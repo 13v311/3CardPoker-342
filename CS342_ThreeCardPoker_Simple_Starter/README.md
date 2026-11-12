@@ -27,3 +27,10 @@ mvn test
 
 The starter does **not** implement poker rules, betting, additional screens,
 animations, or final UI styling. These are student responsibilities.
+### Color Palette
+#1D1D1E Deep Charcoal
+#78142C Maroon
+#C6953F Antique Gold
+#0B403A Deep Forest Teal
+#E9E3D6 Warm Cream
+#F9F7F5 Warm Off-White

@@ -4,10 +4,17 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.HBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="edu.uic.cs342.poker.controller.WelcomeController"
-      alignment="CENTER" spacing="20" styleClass="welcome-root">
+      alignment="CENTER" spacing="20" styleClass="welcome-root"
+      stylesheets="@../css/light-mode.css">
     <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
-    <Label fx:id="welcomeLabel" text="welcome to project 1" styleClass="welcome-label"/>
-    <Button text="Start" onAction="#handleStartButton"/>
+    <Label fx:id="welcomeLabel" text="Three Card Poker" styleClass="welcome-label"/>
+    <HBox spacing="20" alignment="CENTER">
+        <Button styleClass="primary-button" text="Play" onAction="#handleStartButton"/>
+        <Button  styleClass="neutral-button" text="Rules" onAction="#switchToRules"/>
+        <Button  styleClass="secondary-button" text="Exit" onAction="#exitProgram"/>
+    </HBox>
+
 </VBox>

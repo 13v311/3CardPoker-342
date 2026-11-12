@@ -1,0 +1,99 @@
+/* general coloring */
+.root {
+    -bg-primary: #F9F7F5;
+    -bg-surface: #E9E3D6;
+    -border-subtle: #D5CEC0;
+    -text-primary: #1D1D1E;
+    -text-muted: #57534E;
+    -accent-teal: #0B403A;
+    -accent-maroon: #78142C;
+    -accent-gold: #9E7224;
+
+    -fx-font-family: "Georgia";
+
+    /* Automatically sets the main window background color */
+    -fx-background-color: -bg-primary;
+}
+
+
+
+/* Updated 3D button style for modern JavaFX */
+.button.primary-button {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #05211E 0%, #031715 100%),
+            #072C28,
+            #1B6B62,
+            radial-gradient(center 50% 50%, radius 100%, #125951, #0B403A);
+
+}
+
+.button.primary-button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #05211E 0%, #031715 100%),
+            #072C28,
+            #238075,
+            radial-gradient(center 50% 50%, radius 100%, #186E64, #0E4D46);
+}
+
+.button:pressed {
+    -fx-padding: 10 15 13 15;
+    -fx-background-insets: 2 0 0 0, 2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+
+.button.secondary-button {
+
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #450918 0%, #330611 100%),
+            #570D1F,
+            #A62645,
+            radial-gradient(center 50% 50%, radius 100%, #911B37, #78142C);
+
+}
+
+.button.secondary-button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #450918 0%, #330611 100%),
+            #570D1F,
+            #BD3153,
+            radial-gradient(center 50% 50%, radius 100%, #A82242, #8A1833);
+}
+
+
+.button {
+    -fx-background-color: -border-subtle;
+    -fx-padding: 8 15 15 15;
+    -fx-background-insets: 0, 0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(29, 29, 30, 0.45), 4, 0, 0, 1);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+    -fx-cursor: hand;
+}
+
+.button.neutral-button {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #A69E8E 0%, #8F8777 100%),
+            #BDB5A5,
+            #FFFFFF,
+            radial-gradient(center 50% 50%, radius 100%, #F9F7F5, #E9E3D6);
+}
+
+
+
+.button.neutral-button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #A69E8E 0%, #8F8777 100%),
+            #BDB5A5,
+            #FFFFFF,
+            radial-gradient(center 50% 50%, radius 100%, #FFFFFF, #F2EDE4);
+}
+
+.button .text {
+    -fx-fill: #F9F7F5;
+    -fx-effect: dropshadow(gaussian, #000000, 0, 0, 0, 2);
+}
+
+.button.neutral-button .text {
+    -fx-fill: #1D1D1E;
+    -fx-effect: null;
+}

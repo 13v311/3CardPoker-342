@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.uic.cs342.poker.controller.RulesController"
+      spacing="20"
+      stylesheets="@../css/rules.css, @../css/light-mode.css">
+    <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+        <VBox alignment="CENTER" spacing="5" styleClass="rules-box">
+            <Label styleClass="rules-header">Rules</Label>
+            <TextFlow styleClass="rules-description" prefWidth="480.0" maxWidth="-Infinity">
+                <Text text="In this 3-card poker, you and another player will face against a dealer. Firstly, Player 1 will enter their Ante and an optional Pair Plus bet. Player 2 will do the same. Either player can also fold instead of playing their hand. Once both players have made their choice, the dealer’s hand is revealed, and the total winnings are calculated. Certain pairings of cards count as different values, such as a Straight or Flush, and this information is shown when your cards are revealed. The dealer must have at least a Queen-High to qualify. Winning gives your ante and pair plus rewards, and losing takes both from your total. Results are shown after."/>
+            </TextFlow>
+        </VBox>
+        <Button styleClass="secondary-button" text="Return to Main Menu" onAction="#switchToMainMenu"/>
+</VBox>

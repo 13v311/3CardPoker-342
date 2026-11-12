@@ -1,0 +1,19 @@
+
+
+
+
+.rules-box {
+    -fx-padding: 5px;
+}
+
+.rules-header {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.rules-description {
+    -fx-font-size: 16px;
+    -fx-background-color: linear-gradient(from 51.0% 47.0% to 50.0% 100.0%, #f5f5f5 0.0%, #b9b9b9 100.0%);
+    -fx-padding: 15;
+    -fx-background-radius: 5;
+}

@@ -12,7 +12,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(
                 Main.class.getResource("/edu/uic/cs342/poker/fxml/welcome.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root, 480, 280);
+        Scene scene = new Scene(root, 880, 480);
         scene.getStylesheets().add(
                 Main.class.getResource("/edu/uic/cs342/poker/css/style.css").toExternalForm());
         stage.setTitle("CS 342 - Three Card Poker Starter");
