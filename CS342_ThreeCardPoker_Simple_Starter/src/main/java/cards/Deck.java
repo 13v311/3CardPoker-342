@@ -23,17 +23,11 @@ public class Deck {
         Collections.shuffle(cards);
     }
 
-    public void shuffleSeed(){
-        Collections.shuffle(cards, new Random(1));
-    }
+    //Prob use a test class maybe??
+    //public void shuffleSeed(){ Collections.shuffle(cards, new Random(1)); }
 
-    public Card deal(){
-        if(cards.isEmpty()){
-            throw new NoSuchElementException("Deck is empty, cannot deal");
-        }
-        else{
-            return cards.remove(cards.size() - 1);
-        }
-    }
 
+    public List<Card> getCards() {
+        return cards;
+    }
 }
