@@ -1,10 +1,10 @@
-package GameLogic;
+package edu.uic.cs342.poker.GameLogic;
 
-import cards.Card;
+import edu.uic.cs342.poker.cards.Card;
 
 import java.util.List;
 
-public class Logic {
+public class ThreeCardLogic {
 
     public enum HandRank{
         HIGH_CARD,
@@ -61,27 +61,27 @@ public class Logic {
 
         switch (playerRank) {
             case STRAIGHT_FLUSH -> {
-                return 40;
+                return bet*40;
             }
             case THREE_OF_KIND -> {
-                return 30;
+                return bet*30;
             }
             case STRAIGHT -> {
-                return 6;
+                return bet*6;
             }
             case FLUSH -> {
-                return 3;
+                return bet*3;
             }
             default -> {
-                return 1;
+                return bet;
             }
         }
     }
 
 
     private static boolean isThreeOfKind(List<Card> hand){
-        return hand.get(0).getRank() == hand.get(1).getRank()
-                && hand.get(1).getRank() == hand.get(2).getRank();
+        return hand.get(0).rank() == hand.get(1).rank()
+                && hand.get(1).rank() == hand.get(2).rank();
     }
 
     private static boolean isStraight(List<Card> hand){
@@ -90,23 +90,15 @@ public class Logic {
     }
 
     private static boolean isFlush(List<Card> hand){
-        return hand.get(0).getSuit() == hand.get(1).getSuit()
-                && hand.get(1).getSuit() == hand.get(2).getSuit();
+        return hand.get(0).suit() == hand.get(1).suit()
+                && hand.get(1).suit() == hand.get(2).suit();
     }
 
     private static boolean isPair(List<Card> hand){
-        return hand.get(0).getRank() == hand.get(1).getRank()
-                || hand.get(0).getRank() == hand.get(2).getRank()
-                || hand.get(1).getRank() == hand.get(2).getRank();
+        return hand.get(0).rank() == hand.get(1).rank()
+                || hand.get(0).rank() == hand.get(2).rank()
+                || hand.get(1).rank() == hand.get(2).rank();
     }
-
-
-
-
-
-
-
-
 
 
 }

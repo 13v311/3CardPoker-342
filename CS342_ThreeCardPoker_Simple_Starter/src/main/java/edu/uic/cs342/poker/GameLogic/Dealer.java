@@ -1,7 +1,7 @@
-package GameLogic;
+package edu.uic.cs342.poker.GameLogic;
 
-import cards.Card;
-import cards.Deck;
+import edu.uic.cs342.poker.cards.Card;
+import edu.uic.cs342.poker.cards.Deck;
 
 import java.util.ArrayList;
 import java.util.List;

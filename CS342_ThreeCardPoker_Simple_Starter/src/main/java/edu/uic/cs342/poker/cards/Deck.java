@@ -1,4 +1,4 @@
-package cards;
+package edu.uic.cs342.poker.cards;
 
 import java.util.*;
 
