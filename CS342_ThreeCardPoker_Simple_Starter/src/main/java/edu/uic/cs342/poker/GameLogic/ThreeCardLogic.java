@@ -52,8 +52,35 @@ public class ThreeCardLogic {
         HandRank dealerRank = evalHand(dealer);
         HandRank playerRank = evalHand(player);
 
-        return Integer.compare(playerRank.ordinal(), dealerRank.ordinal());
+        int i = Integer.compare(playerRank.ordinal(), dealerRank.ordinal());
 
+        if(i != 0){
+            return i;
+        }
+
+        return tiebreaker(dealer, player);
+
+    }
+
+    private static int tiebreaker(List<Card> dealer, List<Card> player){
+        dealer.sort((a,b) -> Integer.compare(b.getValue(), a.getValue()));
+        player.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+
+        for(int i = 0; i < 3; i++){
+            int dealerRank = dealer.get(i).getValue();
+            int playerRank = player.get(i).getValue();
+
+            if(playerRank > dealerRank){
+                return 1;
+            }
+
+            if(playerRank < dealerRank){
+                return -1;
+            }
+
+
+        }
+        return 0;
     }
 
     public static int evalPPWinnings(List<Card> hand, int bet){

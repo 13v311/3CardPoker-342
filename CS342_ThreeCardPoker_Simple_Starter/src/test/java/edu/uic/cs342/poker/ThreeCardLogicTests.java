@@ -126,10 +126,100 @@ class ThreeCardLogicTests {
         assertEquals(0, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
     }
 
-//    @Test
-//    void sameRankButWinnerTest(){
-//        //come up with something for the actual code
-//    }
+    //With Three of a Kind for these two tests
+    @Test
+    void drawButWinTest(){
+        List<Card> dealerDrawHand = new ArrayList<>();
+        dealerDrawHand.add(new Card(Suit.CLUBS, Rank.TEN));
+        dealerDrawHand.add(new Card(Suit.SPADES, Rank.TEN));
+        dealerDrawHand.add(new Card(Suit.HEARTS, Rank.TEN));
+
+        List<Card> playerDrawHand = new ArrayList<>();
+        playerDrawHand.add(new Card(Suit.CLUBS, Rank.ACE));
+        playerDrawHand.add(new Card(Suit.SPADES, Rank.ACE));
+        playerDrawHand.add(new Card(Suit.HEARTS, Rank.ACE));
+
+        assertEquals(1, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
+    }
+
+    @Test
+    void drawButLoseTest(){
+        List<Card> dealerDrawHand = new ArrayList<>();
+        dealerDrawHand.add(new Card(Suit.CLUBS, Rank.ACE));
+        dealerDrawHand.add(new Card(Suit.SPADES, Rank.ACE));
+        dealerDrawHand.add(new Card(Suit.HEARTS, Rank.ACE));
+
+        List<Card> playerDrawHand = new ArrayList<>();
+        playerDrawHand.add(new Card(Suit.CLUBS, Rank.NINE));
+        playerDrawHand.add(new Card(Suit.SPADES, Rank.NINE));
+        playerDrawHand.add(new Card(Suit.HEARTS, Rank.NINE));
+
+        assertEquals(-1, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
+    }
+
+
+    @Test
+    void highCardDrawAndWinsTest(){
+        List<Card> dealerDrawHand = new ArrayList<>();
+        dealerDrawHand.add(new Card(Suit.CLUBS, Rank.QUEEN));
+        dealerDrawHand.add(new Card(Suit.SPADES, Rank.SEVEN));
+        dealerDrawHand.add(new Card(Suit.HEARTS, Rank.SIX));
+
+        List<Card> playerDrawHand = new ArrayList<>();
+        playerDrawHand.add(new Card(Suit.CLUBS, Rank.KING));
+        playerDrawHand.add(new Card(Suit.SPADES, Rank.NINE));
+        playerDrawHand.add(new Card(Suit.HEARTS, Rank.THREE));
+
+        assertEquals(1, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
+    }
+
+    @Test
+    void straightDrawTiebreakerTest(){
+        List<Card> dealerDrawHand = new ArrayList<>();
+        dealerDrawHand.add(new Card(Suit.CLUBS, Rank.ACE));
+        dealerDrawHand.add(new Card(Suit.SPADES, Rank.KING));
+        dealerDrawHand.add(new Card(Suit.HEARTS, Rank.QUEEN));
+
+        List<Card> playerDrawHand = new ArrayList<>();
+        playerDrawHand.add(new Card(Suit.CLUBS, Rank.SEVEN));
+        playerDrawHand.add(new Card(Suit.SPADES, Rank.SIX));
+        playerDrawHand.add(new Card(Suit.HEARTS, Rank.FIVE));
+
+        assertEquals(-1, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
+    }
+
+    @Test
+    void highCardDrawAndWinsFromSecondTest(){
+        List<Card> dealerDrawHand = new ArrayList<>();
+        dealerDrawHand.add(new Card(Suit.CLUBS, Rank.QUEEN));
+        dealerDrawHand.add(new Card(Suit.SPADES, Rank.SEVEN));
+        dealerDrawHand.add(new Card(Suit.HEARTS, Rank.SIX));
+
+        List<Card> playerDrawHand = new ArrayList<>();
+        playerDrawHand.add(new Card(Suit.CLUBS, Rank.QUEEN));
+        playerDrawHand.add(new Card(Suit.SPADES, Rank.NINE));
+        playerDrawHand.add(new Card(Suit.HEARTS, Rank.THREE));
+
+        assertEquals(1, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
+    }
+
+    @Test
+    void highCardDrawAndWinsFromThirdTest(){
+        List<Card> dealerDrawHand = new ArrayList<>();
+        dealerDrawHand.add(new Card(Suit.CLUBS, Rank.QUEEN));
+        dealerDrawHand.add(new Card(Suit.SPADES, Rank.SEVEN));
+        dealerDrawHand.add(new Card(Suit.HEARTS, Rank.TWO));
+
+        List<Card> playerDrawHand = new ArrayList<>();
+        playerDrawHand.add(new Card(Suit.CLUBS, Rank.QUEEN));
+        playerDrawHand.add(new Card(Suit.SPADES, Rank.SEVEN));
+        playerDrawHand.add(new Card(Suit.HEARTS, Rank.NINE));
+
+        assertEquals(1, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
+    }
+
+
+
 
     //Payouts Test
 
