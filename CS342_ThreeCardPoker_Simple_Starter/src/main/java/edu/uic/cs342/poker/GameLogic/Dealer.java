@@ -17,7 +17,7 @@ public class Dealer {
         hand = new ArrayList<>();
     }
 
-    public Card deal(){
+    private Card deal(){
         if(deck.getCards().isEmpty()){
             throw new NoSuchElementException("Deck is empty, cannot deal");
         }

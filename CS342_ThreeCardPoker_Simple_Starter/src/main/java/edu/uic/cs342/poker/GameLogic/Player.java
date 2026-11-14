@@ -13,6 +13,8 @@ public class Player {
     private int winnings;
     private final List<Card> hand;
     private boolean folded;
+    private boolean played;
+    private boolean decided;
 
     public Player(int amount){
         this.amount = amount;
@@ -23,9 +25,14 @@ public class Player {
         folded = false;
     }
 
+
     public int getAmount(){ return amount; }
     public int getAnte(){ return ante;}
     public int getPairPlusWager(){ return pairPlusWager;}
+    public int getWinnings(){ return winnings; }
+    public boolean getDecided(){ return decided;}
+    public boolean getFolded(){ return folded;}
+    public boolean getPlayed(){ return played; }
     public List<Card> getHand(){ return hand;}
 
     //add card function
@@ -53,12 +60,21 @@ public class Player {
 
     public void folds(){
         folded = true;
+        decided = true;
+    }
+
+    public void plays(){
+        played = true;
+        decided = true;
     }
 
     public void clearHand(){
         hand.clear();
         ante = 0;
         pairPlusWager = 0;
+        folded = false;
+        played = false;
+        decided = false;
     }
 
     public void outcome(int won){
