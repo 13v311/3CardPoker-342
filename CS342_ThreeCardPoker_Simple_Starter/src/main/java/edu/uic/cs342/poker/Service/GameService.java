@@ -2,12 +2,13 @@ package edu.uic.cs342.poker.Service;
 
 import edu.uic.cs342.poker.GameLogic.Dealer;
 import edu.uic.cs342.poker.GameLogic.Player;
+import edu.uic.cs342.poker.GameLogic.ThreeCardLogic;
 import edu.uic.cs342.poker.cards.Deck;
 
 public class GameService {
 
     public enum GameStates{
-        /// need to add more states to be proper
+        /// need to add more states to be proper maybe
         WAITING,
         WAGERING,
         DECIDING,
@@ -15,7 +16,6 @@ public class GameService {
         RESULTS
     }
 
-    private Deck deck;
     private Player player1;
     private Player player2;
     private Dealer dealer;
@@ -30,11 +30,12 @@ public class GameService {
     }
 
     public void startGame(){
-        if(state != GameStates.DECIDING && state != GameStates.RESULTS){
+        if(state != GameStates.WAITING && state != GameStates.RESULTS){
             throw new IllegalStateException("A round has already started");
         }
         player1.clearHand();
         player2.clearHand();
+        dealer.reset();
 
         state = GameStates.WAGERING;
 
@@ -61,8 +62,11 @@ public class GameService {
         if(state != GameStates.DECIDING){
             throw new IllegalStateException("In deciding state");
         }
-
+        if(player.getDecided()){
+            throw new IllegalArgumentException("Player has already played");
+        }
         player.plays();
+
         if(player1.getDecided() && player2.getDecided()){
             //proceed to showdown
             state = GameStates.SHOWDOWN;
@@ -75,8 +79,11 @@ public class GameService {
         if(state != GameStates.DECIDING){
             throw new IllegalStateException("In deciding state");
         }
-
+        if(player.getDecided()){
+            throw new IllegalArgumentException("Player has already folded");
+        }
         player.folds();
+
         if(player1.getDecided() && player2.getDecided()){
             //proceed to showdown
             state = GameStates.SHOWDOWN;
@@ -84,17 +91,79 @@ public class GameService {
         }
     }
 
-    public void showdown(){
+    private void showdown(){
         if(state != GameStates.SHOWDOWN){
             throw new IllegalStateException("Showdown is happening");
         }
         dealer.dealsDealer();
 
+        int player1DidWin = ThreeCardLogic.compareHands(dealer.getHand(), player1.getHand());
+        int player2DidWin = ThreeCardLogic.compareHands(dealer.getHand(), player2.getHand());
+
+        int player1Won = playerPayouts(player1, player1DidWin);
+        int player2Won = playerPayouts(player2, player2DidWin);
+
+        state = GameStates.RESULTS;
+        payouts(player1Won, player2Won);
     }
 
-    public void payouts(){
+
+    private void payouts(int player1Won, int player2Won){
+        if(state != GameStates.RESULTS){
+            throw new IllegalStateException("Round finished and showing results");
+        }
+
+        player1.outcome(player1Won);
+        player2.outcome(player2Won);
+    }
+
+    public void continueNextRound(){
+        startGame();
+    }
+
+    public void menu(){
+        state = GameStates.WAITING;
+    }
+
+
+    private int playerPayouts(Player player, int didWin){
+        int winnings = 0;
+        int ppWinnings = ThreeCardLogic.evalPPWinnings(player.getHand(), player.getPairPlusWager());
+
+        if(dealer.qualify()){
+            if(didWin == 1){
+                winnings = player.getAnte() + player.getPlayWager()+ ppWinnings;
+            }
+            else if(didWin == -1){
+                //Multiply by negative 1 for losing and easier to get when shown results
+                player.setAnte(player.getAnte() * -1);
+                player.setPlayWager(player.getPairPlusWager() * -1);
+
+                winnings = player.getAnte() + player.getPlayWager()+ ppWinnings;
+            }
+            else{
+                winnings = player.getAnte() + ppWinnings;
+            }
+        }
+        else{
+            if(didWin == 1){
+                winnings = player.getAnte() + ppWinnings;
+            }
+            else if(didWin == -1){
+                player.setAnte(player.getAnte() * -1);
+
+                winnings = player.getAnte() + ppWinnings;
+            }
+            else{
+                winnings = player.getAnte() + ppWinnings;
+            }
+        }
+
+        return winnings;
 
     }
+
+
 
 
 

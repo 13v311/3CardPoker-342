@@ -9,6 +9,7 @@ import java.util.List;
 public class Player {
     private int amount;
     private int ante;
+    private int playWager;
     private int pairPlusWager;
     private int winnings;
     private final List<Card> hand;
@@ -25,9 +26,12 @@ public class Player {
         folded = false;
     }
 
+    public void setAnte(int num){this.ante = num;}
+    public void setPlayWager(int num){this.playWager = num;}
 
     public int getAmount(){ return amount; }
     public int getAnte(){ return ante;}
+    public int getPlayWager(){return playWager;}
     public int getPairPlusWager(){ return pairPlusWager;}
     public int getWinnings(){ return winnings; }
     public boolean getDecided(){ return decided;}
@@ -47,6 +51,7 @@ public class Player {
         }
         else{
             this.ante = ante;
+            this.playWager = ante;
         }
 
         if(pairPlusWager > amount){
@@ -60,6 +65,7 @@ public class Player {
 
     public void folds(){
         folded = true;
+        playWager = 0;
         decided = true;
     }
 
@@ -71,6 +77,7 @@ public class Player {
     public void clearHand(){
         hand.clear();
         ante = 0;
+        playWager = 0;
         pairPlusWager = 0;
         folded = false;
         played = false;

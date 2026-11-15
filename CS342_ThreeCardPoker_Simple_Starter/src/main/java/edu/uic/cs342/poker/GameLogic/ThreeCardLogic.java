@@ -99,8 +99,11 @@ public class ThreeCardLogic {
             case FLUSH -> {
                 return bet*3;
             }
-            default -> {
+            case PAIR -> {
                 return bet;
+            }
+            default -> {
+                return bet * -1;
             }
         }
     }
