@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ThreeCardLogicTests {
 
@@ -218,9 +220,6 @@ class ThreeCardLogicTests {
         assertEquals(1, ThreeCardLogic.compareHands(dealerDrawHand, playerDrawHand));
     }
 
-
-
-
     //Payouts Test
 
     @Test
@@ -273,7 +272,22 @@ class ThreeCardLogicTests {
         assertEquals(25, ThreeCardLogic.evalPPWinnings(hand, 25));
     }
 
-    //gotta add more
+    //Error test
+    @Test
+    void evalHandWithFewerThreeTest(){
+        List<Card> hand = new ArrayList<>();
+        hand.add(new Card(Suit.CLUBS, Rank.ACE));
+        hand.add(new Card(Suit.SPADES, Rank.ACE));
+
+        assertThrows(IllegalArgumentException.class, () -> ThreeCardLogic.evalHand(hand) );
+    }
+
+    @Test
+    void evalHandWithEmptyHand(){
+        List<Card> hand = new ArrayList<>();
+
+        assertThrows(IllegalArgumentException.class, () -> ThreeCardLogic.evalHand(hand) );
+    }
 
 
 }

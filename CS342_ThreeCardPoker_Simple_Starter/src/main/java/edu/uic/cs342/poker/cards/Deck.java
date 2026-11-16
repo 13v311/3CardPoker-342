@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Deck {
     private final List<Card> cards = new ArrayList<>();
-    //private ArrayList<Card> pulledCards;
 
     public Deck(){
         reset();
@@ -23,8 +22,9 @@ public class Deck {
         Collections.shuffle(cards);
     }
 
-    //Prob use a test class maybe??
-    //public void shuffleSeed(){ Collections.shuffle(cards, new Random(1)); }
+    public void shuffle(long seed){
+        Collections.shuffle(cards, new Random(seed));
+    }
 
 
     public List<Card> getCards() {

@@ -136,6 +136,7 @@ public class GameService {
             }
             else if(didWin == -1){
                 //Multiply by negative 1 for losing and easier to get when shown results
+                //But maybe there's a better way than actually changing this stuff
                 player.setAnte(player.getAnte() * -1);
                 player.setPlayWager(player.getPairPlusWager() * -1);
 
@@ -162,9 +163,6 @@ public class GameService {
         return winnings;
 
     }
-
-
-
 
 
 }

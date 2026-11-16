@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 public class Dealer {
     private final Deck deck;
     private final List<Card> hand;
-    private boolean qualifies = false;
 
     public Dealer(Deck deck){
         this.deck = deck;
@@ -50,8 +49,19 @@ public class Dealer {
     }
 
     public boolean qualify(){
-        qualifies = true;
-        return qualifies;
+        ThreeCardLogic.HandRank handRank = ThreeCardLogic.evalHand(hand);
+
+        if(handRank == ThreeCardLogic.HandRank.HIGH_CARD){
+            int highest = 0;
+            for(Card card : hand){
+                if(card.getValue() > highest){
+                    highest = card.getValue();
+                }
+            }
+            return highest >= 12;
+        }
+
+        return true;
     }
 
     
