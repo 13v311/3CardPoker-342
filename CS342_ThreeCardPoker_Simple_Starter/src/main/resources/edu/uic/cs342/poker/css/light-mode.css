@@ -13,6 +13,8 @@
 
     /* Automatically sets the main window background color */
     -fx-background-color: -bg-primary;
+
+    -box-bg: linear-gradient(from 51.0% 47.0% to 50.0% 100.0%, #f5f5f5 0.0%, #b9b9b9 100.0%);
 }
 
 

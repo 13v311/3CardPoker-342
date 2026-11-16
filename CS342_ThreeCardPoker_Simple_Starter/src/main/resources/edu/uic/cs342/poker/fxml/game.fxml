@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<?import javafx.scene.image.Image?>
+<StackPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.uic.cs342.poker.controller.GameController"
+      stylesheets="@../css/game.css">
+    <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+
+    <!-- Layer 1, the original content -->
+    <VBox>
+        <HBox fx:id="buttonHeader" spacing="10" alignment="CENTER">
+            <Button styleClass="neutral-button" text="Help"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="ThemeButton" styleClass="neutral-button" text="Theme" onAction="#switchTheme"/>
+        </HBox>
+
+
+        <VBox fx:id="dealerBox" styleClass="dealer-box" spacing="10" alignment="CENTER">
+            <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+            <Label text="Dealer" styleClass="player-label"></Label>
+            <HBox spacing="15" alignment="CENTER">
+                <ImageView fx:id="dealerCard1" fitHeight="80" fitWidth="60.0">
+                    <image>
+                        <Image url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                    </image>
+                </ImageView>
+
+                <ImageView fx:id="dealerCard2" fitHeight="80.0" fitWidth="60.0">
+                    <image>
+                        <Image url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                    </image>
+                </ImageView>
+
+                <ImageView fx:id="dealerCard3" fitHeight="80.0" fitWidth="60.0">
+                    <image>
+                        <Image url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                    </image>
+                </ImageView>
+            </HBox>
+        </VBox>
+        <VBox fx:id="errorBox" alignment="CENTER">
+            <Label fx:id="errorMessage" styleClass="error"/>
+        </VBox>
+        <HBox fx:id="playersBox">
+
+            <VBox fx:id="P1Box" styleClass="player-box" spacing="10" alignment="CENTER">
+                <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+                <HBox.margin>
+                    <Insets top="30.0"/>
+                </HBox.margin>
+                <Label text="Player 1" styleClass="player-label"></Label>
+                <HBox spacing="15" alignment="CENTER">
+
+                    <ImageView fx:id="p1Card1" fitHeight="80.0" fitWidth="60.0">
+                        <image>
+                            <Image  url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                        </image>
+                    </ImageView>
+
+                    <ImageView fx:id="p1Card2" fitHeight="80.0" fitWidth="60.0">
+                        <image>
+                            <Image  url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                        </image>
+                    </ImageView>
+
+                    <ImageView fx:id="p1Card3" fitHeight="80.0" fitWidth="60.0">
+                        <image>
+                            <Image  url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                        </image>
+                    </ImageView>
+                </HBox>
+
+                <VBox styleClass="label-box" alignment="CENTER" spacing="5">
+                    <Label text="Total:"/>
+                    <Label text="Winnings:"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <HBox spacing="5">
+                            <Label text="Ante:"/>
+                            <TextField fx:id="anteField1" promptText="enter amt" styleClass="amtField1" prefColumnCount="5"/>
+                        </HBox>
+                        <HBox spacing="5">
+                            <Label text="Pair Plus:"/>
+                            <TextField fx:id="pairPlusField1" promptText="enter amt" styleClass="amtField1" prefColumnCount="5"/>
+                        </HBox>
+                    </HBox>
+                </VBox>
+
+
+                <HBox spacing="25" alignment="CENTER">
+                    <Button fx:id="PlayButton1" styleClass="primary-button, play-button" text="Play" onAction="#play1"/>
+
+                    <Button fx:id="FoldButton1" styleClass="secondary-button, fold-button" text="Fold" onAction="#fold1"/>
+                </HBox>
+
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <VBox fx:id="P2Box" styleClass="player-box" spacing="10" alignment="CENTER">
+                <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+                <HBox.margin>
+                    <Insets top="30.0"/>
+                </HBox.margin>
+                <Label text="Player 2" styleClass="player-label"></Label>
+                <HBox spacing="15" alignment="CENTER">
+                    <ImageView fx:id="p2Card1" fitHeight="80.0" fitWidth="60.0">
+                        <image>
+                            <Image  url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                        </image>
+                    </ImageView>
+
+                    <ImageView fx:id="p2Card2" fitHeight="80.0" fitWidth="60.0">
+                        <image>
+                            <Image  url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                        </image>
+                    </ImageView>
+
+                    <ImageView fx:id="p2Card3" fitHeight="80.0" fitWidth="60.0">
+                        <image>
+                            <Image  url="/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"/>
+                        </image>
+                    </ImageView>
+                </HBox>
+
+                <VBox styleClass="label-box" alignment="CENTER" spacing="5">
+                    <Label text="Total:"/>
+                    <Label text="Winnings:"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <HBox spacing="5">
+                            <Label text="Ante:"/>
+                            <TextField fx:id="anteField2" promptText="enter amt" styleClass="amtField2" prefColumnCount="5"/>
+                        </HBox>
+                        <HBox spacing="5">
+                            <Label text="Pair Plus:"/>
+                            <TextField fx:id="pairPlusField2" promptText="enter amt" styleClass="amtField2" prefColumnCount="5"/>
+                        </HBox>
+
+
+                    </HBox>
+                </VBox>
+
+                <HBox spacing="25" alignment="CENTER">
+                    <Button fx:id="PlayButton2" styleClass="primary-button, play-button" text="Play" onAction="#play2"/>
+
+                    <Button fx:id="FoldButton2" styleClass="secondary-button, fold-button" text="Fold" onAction="#fold2"/>
+                </HBox>
+            </VBox>
+        </HBox>
+        <HBox fx:id="buttonFooter" spacing="10" alignment="CENTER">
+            <Button fx:id="DealButton" styleClass="primary-button, deal-button, active" text="Deal" onAction="#deal"/>
+        </HBox>
+    </VBox>
+
+    <!-- Layer 2, which is what greys out the main content -->
+    <Pane styleClass="results-background"/>
+    <!-- Layer 3, which is the Results -->
+
+
+</StackPane>

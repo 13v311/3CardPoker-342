@@ -1,0 +1,109 @@
+/* general coloring rules */
+.root {
+
+    -bg-primary: #141312;
+    -bg-surface: #1F1D1B;
+    -border-subtle: #33302C;
+
+
+    -text-primary: #F2EFE9;
+    -text-muted: #A39E93;
+
+
+    -accent-teal: #1B7A6F;
+    -accent-maroon: #B82A4D;
+    -accent-gold: #D49E3B;
+
+
+    -fx-base: #1F1D1B;
+    -fx-background: #141312;
+    -fx-control-inner-background: #1A1817;
+    -fx-focus-color: -accent-teal;
+    -fx-faint-focus-color: rgba(27, 122, 111, 0.25);
+
+    -fx-font-family: "Georgia";
+
+    /* Automatically sets the main window background color */
+    -fx-background-color: #141312;
+
+    -box-bg: linear-gradient(from 51.0% 47.0% to 50.0% 100.0%, #a3a2a2 0.0%, #303030 100.0%);
+}
+
+.button {
+    -fx-background-color: -border-subtle;
+    -fx-padding: 8 15 15 15;
+    -fx-background-insets: 0, 0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    /* Deeper, darker drop shadow so it stands out against dark surfaces */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 6, 0, 0, 2);
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+    -fx-cursor: hand;
+}
+
+.button:pressed {
+    -fx-padding: 10 15 13 15;
+    -fx-background-insets: 2 0 0 0, 2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+
+/* Primary Button: Deep Teal with luminous top bevel */
+.button.primary-button {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #031412 0%, #010A09 100%),
+            #052420,
+            #268A7F,
+            radial-gradient(center 50% 50%, radius 100%, #16695F, #0C4740);
+}
+
+.button.primary-button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #031412 0%, #010A09 100%),
+            #052420,
+            #32A89B,
+            radial-gradient(center 50% 50%, radius 100%, #1D8074, #105951);
+}
+
+/* Secondary Button: Deep Crimson with brighter rim highlight */
+.button.secondary-button {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #2B040E 0%, #1A0208 100%),
+            #420816,
+            #C43356,
+            radial-gradient(center 50% 50%, radius 100%, #9E1F3E, #78132B);
+}
+
+.button.secondary-button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #2B040E 0%, #1A0208 100%),
+            #420816,
+            #DE4368,
+            radial-gradient(center 50% 50%, radius 100%, #B8274B, #8F1835);
+}
+
+/* Neutral Button: Converted from cream/white to charcoal slate */
+.button.neutral-button {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #141517 0%, #0D0E0F 100%),
+            #1F2124,
+            #464A52,
+            radial-gradient(center 50% 50%, radius 100%, #34373D, #282B30);
+}
+
+.button.neutral-button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #141517 0%, #0D0E0F 100%),
+            #1F2124,
+            #575C66,
+            radial-gradient(center 50% 50%, radius 100%, #40444B, #32353B);
+}
+
+/* Text Styling */
+.button .text {
+    -fx-fill: #F2F4F5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.85), 0, 0, 0, 2);
+}
+
+.button.neutral-button .text {
+    -fx-fill: #E6E8EB;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 0, 0, 0, 1);
+}

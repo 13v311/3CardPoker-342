@@ -1,0 +1,42 @@
+.player-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.player-box, .dealer-box {
+    -fx-background-color: -box-bg;
+}
+
+.results-background {
+    visibility: hidden;
+    -fx-background-color: #808080b3;
+}
+
+
+.play-button, .fold-button, .deal-button {
+    visibility: hidden;
+
+}
+
+.play-button.active, .fold-button.active, .deal-button.active {
+    visibility: visible;
+}
+
+.amtField1, .amtField2 {
+    visibility: hidden;
+}
+
+.amtField1.active, .amtField2.active {
+    visibility: visible;
+}
+
+.label-box {
+    -fx-font-size: 16px;
+    -fx-font-weight: 500;
+}
+
+.error {
+    -fx-text-fill: -accent-maroon;
+    -fx-font-weight: 500;
+    -fx-font-size: 16px;
+}

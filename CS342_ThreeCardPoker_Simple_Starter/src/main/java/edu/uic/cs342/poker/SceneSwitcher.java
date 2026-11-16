@@ -15,4 +15,9 @@ public class SceneSwitcher {
         Scene currentScene = ((Node) event.getSource()).getScene();
         currentScene.setRoot(newRoot);
     }
+
+    public static void switchTo(ActionEvent event, Parent newRoot) {
+        Scene currentScene = ((Node) event.getSource()).getScene();
+        currentScene.setRoot(newRoot);
+    }
 }

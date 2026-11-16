@@ -7,14 +7,25 @@
 <?import javafx.scene.layout.HBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="edu.uic.cs342.poker.controller.WelcomeController"
-      alignment="CENTER" spacing="20" styleClass="welcome-root"
-      stylesheets="@../css/light-mode.css">
+      spacing="20" styleClass="welcome-root"
+      stylesheets="@../css/style.css">
     <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
-    <Label fx:id="welcomeLabel" text="Three Card Poker" styleClass="welcome-label"/>
-    <HBox spacing="20" alignment="CENTER">
-        <Button styleClass="primary-button" text="Play" onAction="#handleStartButton"/>
-        <Button  styleClass="neutral-button" text="Rules" onAction="#switchToRules"/>
-        <Button  styleClass="secondary-button" text="Exit" onAction="#exitProgram"/>
+    <HBox spacing="10" alignment="TOP_RIGHT">
+        <Button fx:id="ThemeButton" styleClass="neutral-button" text="Theme" onAction="#switchTheme"/>
     </HBox>
+
+    <VBox alignment="CENTER" spacing="20">
+        <Label fx:id="welcomeLabel" text="Three Card Poker" styleClass="welcome-label"/>
+        <VBox.margin>
+            <Insets top="100.0"/>
+        </VBox.margin>
+
+        <HBox spacing="20" alignment="CENTER">
+            <Button styleClass="primary-button" text="Play" onAction="#playGame"/>
+            <Button  styleClass="neutral-button" text="Rules" onAction="#switchToRules"/>
+            <Button  styleClass="secondary-button" text="Exit" onAction="#exitProgram"/>
+        </HBox>
+    </VBox>
+
 
 </VBox>
