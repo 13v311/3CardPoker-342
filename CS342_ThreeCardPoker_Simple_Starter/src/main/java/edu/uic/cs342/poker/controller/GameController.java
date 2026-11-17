@@ -445,6 +445,7 @@ public class GameController {
 
         delay.setOnFinished(event -> {
             //the fxml element passed here doesn't matter
+            resetCards();
             SceneSwitcher.switchTo(new ActionEvent(dealerCard1, null), root);
         });
 
@@ -532,14 +533,6 @@ public class GameController {
     }
 
     public void prepNextGame() {
-        Platform.runLater(() -> {
-            for(int i = 0; i < 3; i++) {
-                Image nextImage = new Image(getClass().getResourceAsStream("/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"));
-                p1Cards[i].setImage(nextImage);
-                p2Cards[i].setImage(nextImage);
-                dealerCards[i].setImage(nextImage);
-            }
-        });
 
         DealButton.getStyleClass().add("active");
         HandLabel1.setText("");
@@ -565,6 +558,17 @@ public class GameController {
 
         p2decision = false; p1decision = false; folded1 = false; folded2 = false;
         ante1 = 0; ante2 = 0; pp1 = 0; pp2 = 0;
+    }
+
+    private void resetCards() {
+        Image back = new Image(getClass().getResourceAsStream(
+                "/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"));
+        for (int i = 0; i < 3; i++) {
+            for (ImageView card : new ImageView[] {p1Cards[i], p2Cards[i], dealerCards[i]}) {
+                card.setImage(back);
+                card.setOpacity(1.0);
+            }
+        }
     }
 
     private void showPlayerCards() {

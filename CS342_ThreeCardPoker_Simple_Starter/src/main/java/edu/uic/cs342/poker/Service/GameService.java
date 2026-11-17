@@ -109,6 +109,7 @@ public class GameService {
         }
         else{
             player1DidWin = -2; //For folded
+            player1.setDidWin(-2);
         }
 
         if(player2.getPlayed()){
@@ -117,6 +118,7 @@ public class GameService {
         }
         else{
             player2DidWin = -2; //For folded
+            player2.setDidWin(-2);
         }
 
         int player1Won = playerPayouts(player1, player1DidWin);
@@ -148,49 +150,44 @@ public class GameService {
     public GameStates getState(){ return state; }
 
     public int playerPayouts(Player player, int didWin){
-        int winnings = 0;
+        // Read the original wagers once, before anything is changed
+        int ante = player.getAnte();
+        int play = player.getPlayWager();
+        int pp   = player.getPairPlusWager();
 
-        if(didWin == -2){
-            player.setAnte(player.getAnte() * -1);
-            player.setPairPlusWager(player.getPairPlusWager() * -1);
-            winnings = player.getAnte() + player.getPairPlusWager();
-            return winnings;
+        int anteResult = 0;
+        int playResult = 0;
+        int ppResult   = 0;
+
+        // Fold: lose ante and pair plus, no play wager was placed
+        if (didWin == -2) {
+            anteResult = -ante;
+            ppResult   = -pp;
+        } else {
+            // Pair Plus is independent of the dealer (already returns -bet on a loss)
+            if (pp > 0) {
+                ppResult = rules.evalPPWinnings(player.getHand(), pp);
+            }
+
+            if (!dealer.qualify()) {
+                anteResult = ante;        // ante pays 1:1
+                playResult = 0;           // play wager is returned
+            } else if (didWin == 1) {
+                anteResult = ante;
+                playResult = play;
+            } else if (didWin == -1) {
+                anteResult = -ante;
+                playResult = -play;
+            }
+            // didWin == 0 with a qualifying dealer: everything stays 0 (push)
         }
 
-        int ppWinnings = rules.evalPPWinnings(player.getHand(), player.getPairPlusWager());
+        // Store the results on the player so the results screen can read them
+        player.setAnte(anteResult);
+        player.setPlayWager(playResult);
+        player.setPairPlusWager(ppResult);
 
-        player.setPairPlusWager(ppWinnings);
-        winnings += ppWinnings;
-
-        boolean dealerQualifies = dealer.qualify();
-
-        if (!dealerQualifies) {
-            if (didWin == 1 || didWin == 0) {
-                winnings += player.getAnte();
-                player.setPlayWager(0);
-            }
-            else {
-                player.setAnte(-player.getAnte());
-                player.setPlayWager(0);
-                winnings += player.getAnte();
-            }
-        }
-        else {
-            if (didWin == 1) {
-                winnings += player.getAnte() * 2;
-            }
-            else if (didWin == -1) {
-                player.setAnte(-player.getAnte());
-                player.setPlayWager(-player.getPlayWager());
-
-                winnings += player.getAnte() + player.getPlayWager();
-            }
-            else if (didWin == 0) {
-                player.setPlayWager(0);
-            }
-        }
-
-        return winnings;
+        return anteResult + playResult + ppResult;
     }
 
 

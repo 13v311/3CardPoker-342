@@ -72,6 +72,7 @@ public class Player {
         folded = true;
         playWager = 0;
         decided = true;
+        didWin = -1;
     }
 
     public void plays(){
