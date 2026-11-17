@@ -215,6 +215,11 @@ public class GameController {
         ThemeManager.toggleTheme(scene);
     }
 
+    @FXML
+    private void switchToRules(ActionEvent event) throws IOException {
+        SceneSwitcher.switchTo(event, "/edu/uic/cs342/poker/fxml/rules.fxml");
+    }
+
     private boolean checkFields() {
         String ante1 = anteField1.getText();
         String pp1 = pairPlusField1.getText();

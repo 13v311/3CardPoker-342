@@ -3,6 +3,11 @@
     -fx-font-weight: bold;
 }
 
+.hand-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: 500;
+}
+
 .player-box, .dealer-box {
     -fx-background-color: -box-bg;
 }
