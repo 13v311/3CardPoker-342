@@ -99,7 +99,7 @@ public class ResultsController {
     @FXML
     private void continueGame(ActionEvent event) throws IOException {
         SceneSwitcher.switchTo(event, "/edu/uic/cs342/poker/fxml/game.fxml");
-        gameService.continueNextRound();
+        //gameService.continueNextRound();
     }
 
 

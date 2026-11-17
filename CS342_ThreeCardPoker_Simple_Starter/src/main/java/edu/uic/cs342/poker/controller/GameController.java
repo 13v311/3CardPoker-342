@@ -2,13 +2,15 @@ package edu.uic.cs342.poker.controller;
 
 import edu.uic.cs342.poker.GameLogic.Dealer;
 import edu.uic.cs342.poker.GameLogic.Player;
+import edu.uic.cs342.poker.GameLogic.ThreeCardLogic;
 import edu.uic.cs342.poker.SceneSwitcher;
 import edu.uic.cs342.poker.Service.GameService;
 import edu.uic.cs342.poker.ThemeManager;
 import edu.uic.cs342.poker.cards.Card;
 import edu.uic.cs342.poker.cards.Deck;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,11 +21,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 public class GameController {
 
@@ -66,6 +69,9 @@ public class GameController {
     private TextField anteField2;
 
     @FXML
+    private ImageView deckCard;
+
+    @FXML
     private TextField pairPlusField1;
 
     @FXML
@@ -101,6 +107,15 @@ public class GameController {
     @FXML
     private ImageView dealerCard3;
 
+    @FXML
+    private Label HandLabel1;
+
+    @FXML
+    private Label HandLabel2;
+
+    @FXML
+    private VBox P2Box;
+
     private ImageView[] p1Cards;
     private ImageView[] p2Cards;
     private ImageView[] dealerCards;
@@ -135,6 +150,55 @@ public class GameController {
         p1Cards = new ImageView[] {p1Card1, p1Card2, p1Card3};
         p2Cards = new ImageView[] {p2Card1, p2Card2, p2Card3};
         dealerCards = new ImageView[] {dealerCard1, dealerCard2, dealerCard3};
+
+        //the program will start with the transition for the cards
+        dealCardSequence();
+        //dealCardTransition(p1Card1, 50, 50);
+    }
+
+    private TranslateTransition dealCardTransition(ImageView card) {
+
+        Point2D deckScenePosition = deckCard.localToScene(0, 0);
+
+        Pane playerPane = (Pane) card.getParent();
+        Point2D deckPanePosition = playerPane.sceneToLocal(deckScenePosition);
+
+        double startX = deckPanePosition.getX() - card.getLayoutX();
+        double startY = deckPanePosition.getY() - card.getLayoutY();
+
+        card.setTranslateX(startX);
+        card.setTranslateY(startY);
+
+        TranslateTransition transition =
+                new TranslateTransition(Duration.seconds(0.5), card);
+
+        transition.setToX(0);
+        transition.setToY(0);
+
+        return transition;
+    }
+
+    private void dealCardSequence() {
+        Platform.runLater(() -> {
+            //each comment represents the intended position the cards are meant to get to, from a starting pos of 400, 0 for dealer cards
+            SequentialTransition sequence = new SequentialTransition();
+            sequence.getChildren().add(dealCardTransition(dealerCard1)); //300, 100
+            sequence.getChildren().add(dealCardTransition(dealerCard2)); //400, 100
+            sequence.getChildren().add(dealCardTransition(dealerCard3)); //500, 100
+
+            //p1 cards
+            sequence.getChildren().add(dealCardTransition(p1Card1)); //100, 0
+            sequence.getChildren().add(dealCardTransition(p1Card2));//200, 0
+            sequence.getChildren().add(dealCardTransition(p1Card3));//300, 0
+
+            //p2 cards
+            sequence.getChildren().add(dealCardTransition(p2Card1));//100, 0
+            sequence.getChildren().add(dealCardTransition(p2Card2));//200, 0
+            sequence.getChildren().add(dealCardTransition(p2Card3));//300, 0
+
+            sequence.play();
+        });
+
     }
 
 
@@ -147,20 +211,81 @@ public class GameController {
         ThemeManager.toggleTheme(scene);
     }
 
+    private boolean checkFields() {
+        String ante1 = anteField1.getText();
+        String pp1 = pairPlusField1.getText();
+        String ante2 = anteField2.getText();
+        String pp2 = pairPlusField2.getText();
+        if (ante1.isEmpty() || pp1.isEmpty()) {
+            errorMessage.setText("Please enter an amount for both ante and pair plus fields (Player 1).");
+            return false;
+        } else if (!isNumeric(ante1) || !isNumeric(pp1)) {
+            errorMessage.setText("Please enter a numeric value (Player 1).");
+            return false;
+        } else {
+            int anteInt = Integer.parseInt(ante1);
+            int ppInt = Integer.parseInt(pp1);
+
+            if (anteInt < 5 || ppInt < 5 || anteInt > player1.getAmount() || ppInt > player1.getAmount() || anteInt > 25 || ppInt > 25) {
+                errorMessage.setText("Please enter a valid amount that is less than your total amount and between 5 & 25 inclusive (Player 1).");
+                return false;
+            }
+        }
+
+        if (ante2.isEmpty() || pp2.isEmpty()) {
+            errorMessage.setText("Please enter an amount for both ante and pair plus fields (Player 2).");
+            return false;
+        } else if (!isNumeric(ante2) || !isNumeric(pp2)) {
+            errorMessage.setText("Please enter a numeric value (Player 2).");
+            return false;
+        } else {
+            int anteInt = Integer.parseInt(ante2);
+            int ppInt = Integer.parseInt(pp2);
+
+            if (anteInt < 5 || ppInt < 5 || anteInt > player2.getAmount() || ppInt > player2.getAmount() || anteInt > 25 || ppInt > 25) {
+                errorMessage.setText("Please enter a valid amount that is less than your total amount and between 5 & 25 inclusive (Player 2).");
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
     @FXML
     private void deal() {
-        DealButton.getStyleClass().remove("active");
-        PlayButton1.getStyleClass().add("active");
-        FoldButton1.getStyleClass().add("active");
-        PlayButton2.getStyleClass().add("active");
-        FoldButton2.getStyleClass().add("active");
-        anteField1.getStyleClass().add("active");
-        anteField2.getStyleClass().add("active");
-        pairPlusField1.getStyleClass().add("active");
-        pairPlusField2.getStyleClass().add("active");
+        if(checkFields()) {
+            DealButton.getStyleClass().remove("active");
+            PlayButton1.getStyleClass().add("active");
+            FoldButton1.getStyleClass().add("active");
+            PlayButton2.getStyleClass().add("active");
+            FoldButton2.getStyleClass().add("active");
+            anteField1.setEditable(false);
+            anteField2.setEditable(false);
+            pairPlusField1.setEditable(false);
+            pairPlusField2.setEditable(false);
 
 
-        gameService.startGame();
+            gameService.startGame();
+
+            //set the wagers in order to get hands for both players
+            String ante1 = anteField1.getText();
+            String pp1 = pairPlusField1.getText();
+            String ante2 = anteField2.getText();
+            String pp2 = pairPlusField2.getText();
+
+            int anteInt1 = Integer.parseInt(ante1);
+            int anteInt2 = Integer.parseInt(ante2);
+            int ppInt1 = Integer.parseInt(pp1);
+            int ppInt2 = Integer.parseInt(pp2);
+
+            gameService.wagers(anteInt1, ppInt1, anteInt2, ppInt2);
+            showPlayerCards();
+
+            updateHandLabels(player1.getHand(), 1);
+            updateHandLabels(player2.getHand(), 2);
+        }
+
     }
 
 
@@ -169,43 +294,27 @@ public class GameController {
     private void play1() {
         String ante = anteField1.getText();
         String pp = pairPlusField1.getText();
-        if(ante.isEmpty() || pp.isEmpty()) {
-            errorMessage.setText("Please enter an amount for both ante and pair plus fields (Player 1).");
-        } else if(!isNumeric(ante) || !isNumeric(pp)) {
-            errorMessage.setText("Please enter a numeric value (Player 1).");
-        } else {
-            ante1 = Integer.parseInt(ante);
-            pp1 = Integer.parseInt(pp);
+        ante1 = Integer.parseInt(ante);
+        pp1 = Integer.parseInt(pp);
 
-            if(ante1 < 5 || pp1 < 5 || ante1 > player1.getAmount() || pp1 > player1.getAmount() || ante1 > 25 || pp1 > 25) {
-                errorMessage.setText("Please enter a valid amount that is less than your total amount and between 5 & 25 inclusive (Player 1).");
+        PlayButton1.getStyleClass().remove("active");
+        FoldButton1.getStyleClass().remove("active");
+        p1decision = true;
 
-            } else {
-                PlayButton1.getStyleClass().remove("active");
-                FoldButton1.getStyleClass().remove("active");
-                p1decision = true;
+        if(p2decision) {
+            if(folded2) {
 
-                if(p2decision) {
-                    if(folded2) {
-                        gameService.wagers(ante1, pp1, 0, 0);
-                        gameService.play(player1);
-                        gameService.fold(player2);
-                        //player1.setAnte(ante1);
+                gameService.play(player1);
+                gameService.fold(player2);
 
-                    } else{
-                        gameService.wagers(ante1, pp1, ante2, pp2);
-                        gameService.play(player1);
-                        gameService.play(player2);
-                    }
-                    showCards(folded1, folded2);
-                }
+
+            } else{
+
+                gameService.play(player1);
+                gameService.play(player2);
             }
-
-
+            showDealerCards();
         }
-
-
-
 
     }
 
@@ -213,37 +322,27 @@ public class GameController {
     private void play2() {
         String ante = anteField2.getText();
         String pp = pairPlusField2.getText();
-        if(ante.isEmpty() || pp.isEmpty()) {
-            errorMessage.setText("Please enter an amount for both ante and pair plus fields (Player 2).");
-        } else if(!isNumeric(ante) || !isNumeric(pp)) {
-            errorMessage.setText("Please enter a numeric value (Player 2).");
-        } else {
-            ante2 = Integer.parseInt(ante);
-            pp2 = Integer.parseInt(pp);
+        ante2 = Integer.parseInt(ante);
+        pp2 = Integer.parseInt(pp);
 
-            if (ante2 < 5 || pp2 < 5 || ante2 > player2.getAmount() || pp2 > player2.getAmount() || ante2 > 25 || pp2 > 25) {
-                errorMessage.setText("Please enter a valid amount that is less than your total amount and between 5 & 25 inclusive(Player 2).");
+        PlayButton2.getStyleClass().remove("active");
+        FoldButton2.getStyleClass().remove("active");
+        p2decision = true;
+
+        if (p1decision) {
+            if (folded1) {
+
+                gameService.fold(player1);
+                gameService.play(player2);
 
             } else {
-                PlayButton2.getStyleClass().remove("active");
-                FoldButton2.getStyleClass().remove("active");
-                p2decision = true;
 
-                if (p1decision) {
-                    if (folded1) {
-                        gameService.wagers(0, 0, ante2, pp2);
-                        gameService.fold(player1);
-                        gameService.play(player2);
-
-                    } else {
-                        gameService.wagers(ante1, pp1, ante2, pp2);
-                        gameService.play(player1);
-                        gameService.play(player2);
-                    }
-                    showCards(folded1, folded2);
-                }
+                gameService.play(player1);
+                gameService.play(player2);
             }
+            showDealerCards();
         }
+
     }
 
     @FXML
@@ -255,15 +354,15 @@ public class GameController {
 
         if(p2decision) {
             if(folded2) {
-                gameService.wagers(0, 0, 0, 0);
+
                 gameService.fold(player1);
                 gameService.fold(player2);
             } else{
-                gameService.wagers(0, 0, ante2, pp2);
+
                 gameService.fold(player1);
                 gameService.play(player2);
             }
-            showCards(folded1, folded2);
+            showDealerCards();
         }
 
     }
@@ -277,21 +376,21 @@ public class GameController {
 
         if(p1decision) {
             if(folded1) {
-                gameService.wagers(0, 0, 0, 0);
+
                 gameService.fold(player1);
                 gameService.fold(player2);
             } else{
-                gameService.wagers(ante1, pp1, 0, 0);
+
                 gameService.play(player1);
                 gameService.fold(player2);
             }
-            showCards(folded1, folded2);
+            showDealerCards();
         }
 
     }
 
     private void transitionToResults() {
-        PauseTransition delay = new PauseTransition(Duration.seconds(2.5));
+        PauseTransition delay = new PauseTransition(Duration.seconds(4));
         Parent root;
         //making sure results controller has the game service
         FXMLLoader loader = new FXMLLoader(
@@ -321,9 +420,9 @@ public class GameController {
         delay.play();
     }
 
-    private void fadeSwapImage(ImageView img, String filename) {
+    private Animation fadeSwapImage(ImageView img, String filename) {
         //fade out the current img
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), img);
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), img);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
 
@@ -332,76 +431,18 @@ public class GameController {
             Image nextImage = new Image(getClass().getResourceAsStream(filename));
             img.setImage(nextImage);
 
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(200), img);
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), img);
             fadeIn.setFromValue(0.0);
             fadeIn.setToValue(1.0);
             fadeIn.play();
         });
 
-        fadeOut.play();
+        return fadeOut;
+
     }
 
-    private void showCards(boolean folded1, boolean folded2) {
-        if(!folded1) {
-            List<Card> p1Hand = player1.getHand();
-            for(int i = 0; i < p1Hand.size(); i++) {
-                String suitName = p1Hand.get(i).suit().toString().toLowerCase();
-                String rank = p1Hand.get(i).rank().toString().toLowerCase();
-
-                switch (p1Hand.get(i).rank()) {
-                    case ACE -> rank = "ace";
-                    case TWO -> rank = "2";
-                    case THREE -> rank = "3";
-                    case FOUR -> rank = "4";
-                    case FIVE -> rank = "5";
-                    case SIX -> rank = "6";
-                    case SEVEN -> rank = "7";
-                    case EIGHT -> rank = "8";
-                    case NINE -> rank = "9";
-                    case TEN -> rank = "10";
-                    case JACK -> rank = "jack";
-                    case QUEEN -> rank = "queen";
-                    case KING -> rank = "king";
-                }
-
-                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
-                fadeSwapImage(p1Cards[i], filename);
-                generalPause(2);
-
-            }
-
-
-        }
-        if(!folded2) {
-            List<Card> p2Hand = player2.getHand();
-            for(int i = 0; i < p2Hand.size(); i++) {
-                String suitName = p2Hand.get(i).suit().toString().toLowerCase();
-                String rank = p2Hand.get(i).rank().toString().toLowerCase();
-
-                switch (p2Hand.get(i).rank()) {
-                    case ACE -> rank = "ace";
-                    case TWO -> rank = "2";
-                    case THREE -> rank = "3";
-                    case FOUR -> rank = "4";
-                    case FIVE -> rank = "5";
-                    case SIX -> rank = "6";
-                    case SEVEN -> rank = "7";
-                    case EIGHT -> rank = "8";
-                    case NINE -> rank = "9";
-                    case TEN -> rank = "10";
-                    case JACK -> rank = "jack";
-                    case QUEEN -> rank = "queen";
-                    case KING -> rank = "king";
-                }
-
-                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
-                fadeSwapImage(p2Cards[i], filename);
-
-            }
-
-
-        }
-
+    private void showDealerCards() {
+        SequentialTransition sequence = new SequentialTransition();
         List<Card> dealerHand = dealer.getHand();
         for(int i = 0; i < dealerHand.size(); i++) {
             String suitName = dealerHand.get(i).suit().toString().toLowerCase();
@@ -425,11 +466,92 @@ public class GameController {
 
             String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
 
-            fadeSwapImage(dealerCards[i], filename);
+            sequence.getChildren().add(fadeSwapImage(dealerCards[i], filename));
         }
-
+        sequence.play();
 
         transitionToResults(); //this is the last thing and there is a 2.5 sec delay before it happens
-
+        DealButton.getStyleClass().add("active");
+        HandLabel1.setText("");
+        HandLabel2.setText("");
     }
+
+    private void showPlayerCards() {
+        SequentialTransition sequence = new SequentialTransition();
+
+
+
+            List<Card> p1Hand = player1.getHand();
+
+            for(int i = 0; i < p1Hand.size(); i++) {
+                String suitName = p1Hand.get(i).suit().toString().toLowerCase();
+                String rank = p1Hand.get(i).rank().toString().toLowerCase();
+
+                switch (p1Hand.get(i).rank()) {
+                    case ACE -> rank = "ace";
+                    case TWO -> rank = "2";
+                    case THREE -> rank = "3";
+                    case FOUR -> rank = "4";
+                    case FIVE -> rank = "5";
+                    case SIX -> rank = "6";
+                    case SEVEN -> rank = "7";
+                    case EIGHT -> rank = "8";
+                    case NINE -> rank = "9";
+                    case TEN -> rank = "10";
+                    case JACK -> rank = "jack";
+                    case QUEEN -> rank = "queen";
+                    case KING -> rank = "king";
+                }
+
+                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
+                sequence.getChildren().add(fadeSwapImage(p1Cards[i], filename));
+
+
+            }
+
+
+
+
+            List<Card> p2Hand = player2.getHand();
+            for(int i = 0; i < p2Hand.size(); i++) {
+                String suitName = p2Hand.get(i).suit().toString().toLowerCase();
+                String rank = p2Hand.get(i).rank().toString().toLowerCase();
+
+                switch (p2Hand.get(i).rank()) {
+                    case ACE -> rank = "ace";
+                    case TWO -> rank = "2";
+                    case THREE -> rank = "3";
+                    case FOUR -> rank = "4";
+                    case FIVE -> rank = "5";
+                    case SIX -> rank = "6";
+                    case SEVEN -> rank = "7";
+                    case EIGHT -> rank = "8";
+                    case NINE -> rank = "9";
+                    case TEN -> rank = "10";
+                    case JACK -> rank = "jack";
+                    case QUEEN -> rank = "queen";
+                    case KING -> rank = "king";
+                }
+
+                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
+                sequence.getChildren().add(fadeSwapImage(p2Cards[i], filename));
+            }
+            sequence.play();
+    }
+
+    private void updateHandLabels(List<Card> hand, int player) {
+        String labelText = "";
+        switch (ThreeCardLogic.evalHand(hand)) {
+            case PAIR -> labelText = "Pair";
+            case FLUSH -> labelText = "Flush";
+            case STRAIGHT -> labelText = "Straight";
+            case HIGH_CARD -> labelText = "High Card";
+            case THREE_OF_KIND -> labelText = "Three of a Kind";
+            case STRAIGHT_FLUSH -> labelText = "Straight Flush";
+        }
+
+        if(player == 1) { HandLabel1.setText(labelText); }
+        else if (player == 2) { HandLabel2.setText(labelText); }
+    }
+
 }
