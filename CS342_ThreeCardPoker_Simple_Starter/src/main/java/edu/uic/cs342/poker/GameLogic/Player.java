@@ -68,6 +68,7 @@ public class Player {
     }
 
     public void folds(){
+        played = false;
         folded = true;
         playWager = 0;
         decided = true;
@@ -75,6 +76,7 @@ public class Player {
 
     public void plays(){
         played = true;
+        folded = false;
         decided = true;
         playWager = ante;
     }

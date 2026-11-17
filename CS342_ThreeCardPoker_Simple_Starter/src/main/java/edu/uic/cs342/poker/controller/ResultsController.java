@@ -1,5 +1,6 @@
 package edu.uic.cs342.poker.controller;
 
+import edu.uic.cs342.poker.GameLogic.Dealer;
 import edu.uic.cs342.poker.GameLogic.Player;
 import edu.uic.cs342.poker.GameLogic.ThreeCardLogic;
 import edu.uic.cs342.poker.SceneSwitcher;
@@ -19,15 +20,17 @@ public class ResultsController {
     private GameService gameService;
     private Player player1;
     private Player player2;
+    private Dealer dealer;
 
     public void setGameService(GameService gameService) {
         this.gameService = gameService;
         updateResults();
     }
 
-    public void setPlayers(Player player1, Player player2) {
+    public void setPlayers(Player player1, Player player2, Dealer dealer) {
         this.player1 = player1;
         this.player2 = player2;
+        this.dealer = dealer;
         updateResults();
 
     }
@@ -96,6 +99,7 @@ public class ResultsController {
         }
         else{
             winner.setText("Dealer Wins");
+            winnerHow.setText(handRankLine(dealer));
         }
 
 
@@ -129,6 +133,26 @@ public class ResultsController {
             case PAIR -> "Pair";
             case HIGH_CARD -> {
                 Card highest = player.getHand().stream()
+                        .max(Comparator.comparingInt(Card::getValue))
+                        .orElseThrow();
+
+                yield "High Card: " + highest.rank();
+            }
+        };
+
+    }
+
+    private String handRankLine(Dealer dealer){
+        ThreeCardLogic.HandRank ranking = ThreeCardLogic.evalHand(dealer.getHand());
+
+        return switch (ranking) {
+            case STRAIGHT_FLUSH -> "Straight Flush";
+            case THREE_OF_KIND -> "Three of a Kind";
+            case STRAIGHT -> "Straight";
+            case FLUSH -> "Flush";
+            case PAIR -> "Pair";
+            case HIGH_CARD -> {
+                Card highest = dealer.getHand().stream()
                         .max(Comparator.comparingInt(Card::getValue))
                         .orElseThrow();
 

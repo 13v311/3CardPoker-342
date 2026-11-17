@@ -408,7 +408,7 @@ public class GameController {
 
         ResultsController controller = loader.getController();
 
-        controller.setPlayers(player1, player2);
+        controller.setPlayers(player1, player2, dealer);
         controller.setGameService(gameService);
 
         delay.setOnFinished(event -> {

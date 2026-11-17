@@ -99,14 +99,25 @@ public class GameService {
 
     private void showdown(){
         if(state != GameStates.SHOWDOWN){
-            throw new IllegalStateException("Showdown is happening");
+            throw new IllegalStateException("Cannot perform Showdown since not in showdown state");
         }
         dealer.dealsDealer();
 
-        player1DidWin = rules.compareHands(dealer.getHand(), player1.getHand());
-        player2DidWin = rules.compareHands(dealer.getHand(), player2.getHand());
-        player1.setDidWin(player1DidWin);
-        player2.setDidWin(player2DidWin);
+        if(player1.getPlayed()){
+            player1DidWin = rules.compareHands(dealer.getHand(), player1.getHand());
+            player1.setDidWin(player1DidWin);
+        }
+        else{
+            player1DidWin = -2; //For folded
+        }
+
+        if(player2.getPlayed()){
+            player2DidWin = rules.compareHands(dealer.getHand(), player2.getHand());
+            player2.setDidWin(player2DidWin);
+        }
+        else{
+            player2DidWin = -2; //For folded
+        }
 
         int player1Won = playerPayouts(player1, player1DidWin);
         int player2Won = playerPayouts(player2, player2DidWin);
@@ -138,39 +149,46 @@ public class GameService {
 
     public int playerPayouts(Player player, int didWin){
         int winnings = 0;
+
+        if(didWin == -2){
+            player.setAnte(player.getAnte() * -1);
+            player.setPairPlusWager(player.getPairPlusWager() * -1);
+            winnings = player.getAnte() + player.getPairPlusWager();
+            return winnings;
+        }
+
         int ppWinnings = rules.evalPPWinnings(player.getHand(), player.getPairPlusWager());
 
         player.setPairPlusWager(ppWinnings);
+        winnings += ppWinnings;
 
         boolean dealerQualifies = dealer.qualify();
 
-        if (dealerQualifies) {
-            if (didWin == 1) {
-                player.setAnte(player.getAnte());
-                player.setPlayWager(player.getAnte());
-
-                winnings += player.getAnte() + player.getPlayWager();
+        if (!dealerQualifies) {
+            if (didWin == 1 || didWin == 0) {
+                winnings += player.getAnte();
+                player.setPlayWager(0);
             }
-            else if (didWin == -1) {
-                player.setAnte(player.getAnte() * -1);
-                player.setPlayWager(-player.getAnte() * -1);
-
-                winnings += player.getAnte() + player.getPlayWager();
+            else {
+                player.setAnte(-player.getAnte());
+                player.setPlayWager(0);
+                winnings += player.getAnte();
             }
         }
         else {
             if (didWin == 1) {
-                player.setPlayWager(0);
-                winnings += player.getAnte();
+                winnings += player.getAnte() * 2;
             }
-            else if (didWin == -1){
-                player.setAnte(player.getAnte() * -1);
+            else if (didWin == -1) {
+                player.setAnte(-player.getAnte());
+                player.setPlayWager(-player.getPlayWager());
+
+                winnings += player.getAnte() + player.getPlayWager();
+            }
+            else if (didWin == 0) {
                 player.setPlayWager(0);
-                winnings += player.getAnte();
             }
         }
-
-        winnings += ppWinnings;
 
         return winnings;
     }
