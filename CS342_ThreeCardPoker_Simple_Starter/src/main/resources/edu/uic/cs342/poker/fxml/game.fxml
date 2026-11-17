@@ -19,7 +19,7 @@
     <!-- Layer 1, the original content -->
     <VBox>
         <HBox fx:id="buttonHeader" spacing="10" alignment="CENTER">
-            <Button styleClass="neutral-button" text="Help" />
+            <Button styleClass="neutral-button" text="Help" onAction="#switchToRules"/>
             <Region HBox.hgrow="ALWAYS"/>
             <Button fx:id="ThemeButton" styleClass="neutral-button" text="Theme" onAction="#switchTheme"/>
         </HBox>
@@ -93,8 +93,16 @@
                 </Pane>
 
                 <VBox styleClass="label-box" alignment="CENTER" spacing="5">
-                    <Label text="Total:"/>
-                    <Label text="Winnings:"/>
+                    <HBox spacing="5">
+                        <Label text="Total:"/>
+                        <Label fx:id="TotalLabel1"/>
+                    </HBox>
+
+                    <HBox spacing="5">
+                        <Label text="Winnings:"/>
+                        <Label fx:id="WinningsLabel1"/>
+                    </HBox>
+
                     <HBox spacing="20" alignment="CENTER">
                         <HBox spacing="5">
                             <Label text="Ante:"/>
@@ -146,8 +154,16 @@
                 </Pane>
 
                 <VBox styleClass="label-box" alignment="CENTER" spacing="5">
-                    <Label text="Total:"/>
-                    <Label text="Winnings:"/>
+                    <HBox spacing="5">
+                        <Label text="Total:"/>
+                        <Label fx:id="TotalLabel2"/>
+                    </HBox>
+
+                    <HBox spacing="5">
+                        <Label text="Winnings:"/>
+                        <Label fx:id="WinningsLabel2" />
+                    </HBox>
+
                     <HBox spacing="20" alignment="CENTER">
                         <HBox spacing="5">
                             <Label text="Ante:"/>

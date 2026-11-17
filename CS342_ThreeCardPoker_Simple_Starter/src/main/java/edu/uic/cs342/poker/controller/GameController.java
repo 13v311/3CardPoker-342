@@ -26,10 +26,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
+
+
 
 public class GameController {
 
@@ -116,8 +119,17 @@ public class GameController {
     @FXML
     private Label HandLabel2;
 
-    @FXML
-    private VBox P2Box;
+   @FXML
+   private Label TotalLabel1;
+
+   @FXML
+   private Label TotalLabel2;
+
+   @FXML
+   private Label WinningsLabel1;
+
+   @FXML
+   private Label WinningsLabel2;
 
     private ImageView[] p1Cards;
     private ImageView[] p2Cards;
@@ -150,6 +162,11 @@ public class GameController {
         p1decision = false; p2decision = false; folded1 = false; folded2 = false;
         ante1 = 0; ante2 = 0; pp1 = 0; pp2 = 0;
         errorMessage.setText("");
+
+        TotalLabel1.setText("$100");
+        TotalLabel2.setText("$100");
+        WinningsLabel1.setText("$0");
+        WinningsLabel2.setText("$0");
 
         p1Cards = new ImageView[] {p1Card1, p1Card2, p1Card3};
         p2Cards = new ImageView[] {p2Card1, p2Card2, p2Card3};
@@ -323,6 +340,8 @@ public class GameController {
                 gameService.play(player2);
             }
             showDealerCards();
+            //transitionToResults(); //anything after this point is meant to be viewed when the player presses continue
+            prepNextGame();
         }
 
     }
@@ -350,6 +369,8 @@ public class GameController {
                 gameService.play(player2);
             }
             showDealerCards();
+            //transitionToResults(); //anything after this point is meant to be viewed when the player presses continue
+            prepNextGame();
         }
 
     }
@@ -372,6 +393,8 @@ public class GameController {
                 gameService.play(player2);
             }
             showDealerCards();
+           // transitionToResults(); //anything after this point is meant to be viewed when the player presses continue
+            prepNextGame();
         }
 
     }
@@ -394,13 +417,16 @@ public class GameController {
                 gameService.fold(player2);
             }
             showDealerCards();
+            //transitionToResults(); //anything after this point is meant to be viewed when the player presses continue
+           prepNextGame();
         }
 
     }
 
+    private static Parent root;
     private void transitionToResults() {
         PauseTransition delay = new PauseTransition(Duration.seconds(4));
-        Parent root;
+
         //making sure results controller has the game service
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/edu/uic/cs342/poker/fxml/results.fxml")
@@ -416,6 +442,7 @@ public class GameController {
         controller.setPlayers(player1, player2);
         controller.setGameService(gameService);
 
+
         delay.setOnFinished(event -> {
             //the fxml element passed here doesn't matter
             SceneSwitcher.switchTo(new ActionEvent(dealerCard1, null), root);
@@ -424,10 +451,7 @@ public class GameController {
         delay.play();
     }
 
-    private void generalPause(double secs) {
-        PauseTransition delay = new PauseTransition(Duration.seconds(secs));
-        delay.play();
-    }
+
 
     private Animation fadeSwapImage(ImageView img, String filename) {
         //fade out the current img
@@ -447,6 +471,18 @@ public class GameController {
         });
 
         return fadeOut;
+
+    }
+
+    private void emphasizeText(Label label) {
+        ScaleTransition transition = new ScaleTransition(Duration.seconds(0.5), label);
+
+        transition.setByX(1.5);
+        transition.setByY(1.5);
+        transition.setCycleCount(2);
+        transition.setAutoReverse(true);
+
+        transition.play();
 
     }
 
@@ -485,12 +521,50 @@ public class GameController {
 
             sequence.getChildren().add(fadeSwapImage(dealerCards[i], filename));
         }
+
+        sequence.setOnFinished( event -> {
+
+            transitionToResults();
+
+        });
         sequence.play();
 
-        transitionToResults(); //this is the last thing and there is a 2.5 sec delay before it happens
+    }
+
+    public void prepNextGame() {
+        Platform.runLater(() -> {
+            for(int i = 0; i < 3; i++) {
+                Image nextImage = new Image(getClass().getResourceAsStream("/edu/uic/cs342/poker/images/PNG-cards-1.3/back_of_card.png"));
+                p1Cards[i].setImage(nextImage);
+                p2Cards[i].setImage(nextImage);
+                dealerCards[i].setImage(nextImage);
+            }
+        });
+
         DealButton.getStyleClass().add("active");
         HandLabel1.setText("");
         HandLabel2.setText("");
+        WinningsLabel1.setText("$" + player1.getWinnings());
+        WinningsLabel2.setText("$" + player2.getWinnings());
+        TotalLabel1.setText("$" + player1.getAmount());
+        TotalLabel2.setText("$" + player2.getAmount());
+
+        emphasizeText(WinningsLabel1);
+        emphasizeText(WinningsLabel2);
+        emphasizeText(TotalLabel1);
+        emphasizeText(TotalLabel2);
+
+        anteField1.setEditable(true);
+        anteField2.setEditable(true);
+        pairPlusField1.setEditable(true);
+        pairPlusField2.setEditable(true);
+        errorMessage.setText("");
+
+
+
+
+        p2decision = false; p1decision = false; folded1 = false; folded2 = false;
+        ante1 = 0; ante2 = 0; pp1 = 0; pp2 = 0;
     }
 
     private void showPlayerCards() {

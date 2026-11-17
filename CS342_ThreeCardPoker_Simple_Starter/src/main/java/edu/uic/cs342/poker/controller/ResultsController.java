@@ -80,6 +80,13 @@ public class ResultsController {
         //updateResults();
     }
 
+    private GameController gameController;
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+
     private void updateResults() {
 
         if(player1.getDidWin() == 1 && player2.getDidWin() == 1){
@@ -145,8 +152,9 @@ public class ResultsController {
 
     @FXML
     private void continueGame(ActionEvent event) throws IOException {
+        //gameController.prepNextGame();
         SceneSwitcher.switchTo(event, "/edu/uic/cs342/poker/fxml/game.fxml");
-        //gameService.continueNextRound();
+
     }
 
 
