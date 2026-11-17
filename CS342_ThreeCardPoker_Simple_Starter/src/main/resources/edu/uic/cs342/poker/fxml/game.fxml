@@ -53,6 +53,7 @@
                 </ImageView>
 
             </Pane>
+            <Label fx:id="dealerQualifyLabel" styleClass="hand-label"/>
         </VBox>
 
         <VBox fx:id="errorBox" alignment="CENTER">

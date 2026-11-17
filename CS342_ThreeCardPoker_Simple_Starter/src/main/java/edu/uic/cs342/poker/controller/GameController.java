@@ -131,6 +131,9 @@ public class GameController {
    @FXML
    private Label WinningsLabel2;
 
+    @FXML
+    private Label dealerQualifyLabel;
+
     private ImageView[] p1Cards;
     private ImageView[] p2Cards;
     private ImageView[] dealerCards;
@@ -167,6 +170,7 @@ public class GameController {
         TotalLabel2.setText("$100");
         WinningsLabel1.setText("$0");
         WinningsLabel2.setText("$0");
+        dealerQualifyLabel.setText("");
 
         p1Cards = new ImageView[] {p1Card1, p1Card2, p1Card3};
         p2Cards = new ImageView[] {p2Card1, p2Card2, p2Card3};
@@ -524,7 +528,9 @@ public class GameController {
         }
 
         sequence.setOnFinished( event -> {
-
+            dealerQualifyLabel.setText(dealer.qualify()
+                    ? "Dealer qualifies"
+                    : "Dealer does not qualify");
             transitionToResults();
 
         });
