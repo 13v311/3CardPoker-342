@@ -2,7 +2,6 @@ package edu.uic.cs342.poker;
 
 import edu.uic.cs342.poker.GameLogic.Dealer;
 import edu.uic.cs342.poker.GameLogic.Player;
-import edu.uic.cs342.poker.GameLogic.ThreeCardLogic;
 import edu.uic.cs342.poker.cards.Card;
 import edu.uic.cs342.poker.cards.Deck;
 import edu.uic.cs342.poker.cards.Rank;
@@ -164,9 +163,5 @@ public class DeckAndDealerTests {
         assertThrows(NoSuchElementException.class,
                 dealer::dealsDealer);
     }
-
-
-
-
 
 }

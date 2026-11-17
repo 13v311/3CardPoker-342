@@ -1,6 +1,7 @@
 package edu.uic.cs342.poker.Service;
 
 import edu.uic.cs342.poker.GameLogic.Dealer;
+import edu.uic.cs342.poker.GameLogic.DealerInterface;
 import edu.uic.cs342.poker.GameLogic.Player;
 import edu.uic.cs342.poker.GameLogic.ThreeCardLogic;
 import edu.uic.cs342.poker.cards.Deck;
@@ -18,15 +19,19 @@ public class GameService {
 
     private Player player1;
     private Player player2;
-    private Dealer dealer;
+    private DealerInterface dealer;
     private GameStates state;
+    private GameRules rules;
+    private int player1DidWin;
+    private int player2DidWin;
 
 
-    public GameService(Player player1, Player player2, Dealer dealer){
+    public GameService(Player player1, Player player2, DealerInterface dealer, GameRules rules){
         this.player1 = player1;
         this.player2 = player2;
         this.dealer = dealer;
         this.state = GameStates.WAITING;
+        this.rules = rules;
     }
 
     public void startGame(){
@@ -36,6 +41,7 @@ public class GameService {
         player1.clearHand();
         player2.clearHand();
         dealer.reset();
+        dealer.shuffle();
 
         state = GameStates.WAGERING;
 
@@ -97,8 +103,10 @@ public class GameService {
         }
         dealer.dealsDealer();
 
-        int player1DidWin = ThreeCardLogic.compareHands(dealer.getHand(), player1.getHand());
-        int player2DidWin = ThreeCardLogic.compareHands(dealer.getHand(), player2.getHand());
+        player1DidWin = rules.compareHands(dealer.getHand(), player1.getHand());
+        player2DidWin = rules.compareHands(dealer.getHand(), player2.getHand());
+        player1.setDidWin(player1DidWin);
+        player2.setDidWin(player2DidWin);
 
         int player1Won = playerPayouts(player1, player1DidWin);
         int player2Won = playerPayouts(player2, player2DidWin);
@@ -126,42 +134,45 @@ public class GameService {
     }
 
 
-    private int playerPayouts(Player player, int didWin){
+    public GameStates getState(){ return state; }
+
+    public int playerPayouts(Player player, int didWin){
         int winnings = 0;
-        int ppWinnings = ThreeCardLogic.evalPPWinnings(player.getHand(), player.getPairPlusWager());
+        int ppWinnings = rules.evalPPWinnings(player.getHand(), player.getPairPlusWager());
 
-        if(dealer.qualify()){
-            if(didWin == 1){
-                winnings = player.getAnte() + player.getPlayWager()+ ppWinnings;
+        player.setPairPlusWager(ppWinnings);
+
+        boolean dealerQualifies = dealer.qualify();
+
+        if (dealerQualifies) {
+            if (didWin == 1) {
+                player.setAnte(player.getAnte());
+                player.setPlayWager(player.getAnte());
+
+                winnings += player.getAnte() + player.getPlayWager();
             }
-            else if(didWin == -1){
-                //Multiply by negative 1 for losing and easier to get when shown results
-                //But maybe there's a better way than actually changing this stuff
+            else if (didWin == -1) {
                 player.setAnte(player.getAnte() * -1);
-                player.setPlayWager(player.getPairPlusWager() * -1);
+                player.setPlayWager(-player.getAnte() * -1);
 
-                winnings = player.getAnte() + player.getPlayWager()+ ppWinnings;
-            }
-            else{
-                winnings = player.getAnte() + ppWinnings;
+                winnings += player.getAnte() + player.getPlayWager();
             }
         }
-        else{
-            if(didWin == 1){
-                winnings = player.getAnte() + ppWinnings;
+        else {
+            if (didWin == 1) {
+                player.setPlayWager(0);
+                winnings += player.getAnte();
             }
-            else if(didWin == -1){
+            else if (didWin == -1){
                 player.setAnte(player.getAnte() * -1);
-
-                winnings = player.getAnte() + ppWinnings;
-            }
-            else{
-                winnings = player.getAnte() + ppWinnings;
+                player.setPlayWager(0);
+                winnings += player.getAnte();
             }
         }
+
+        winnings += ppWinnings;
 
         return winnings;
-
     }
 
 

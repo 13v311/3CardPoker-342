@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class Dealer {
+public class Dealer implements DealerInterface {
     private final Deck deck;
     private final List<Card> hand;
 
@@ -23,6 +23,10 @@ public class Dealer {
     public void reset(){
         hand.clear();
         deck.reset();
+    }
+
+    public void shuffle(){
+        deck.shuffle();
     }
 
     private Card deal(){

@@ -1,3 +1,28 @@
-.label {
+
+.player-card {
+    -fx-background-color: -box-bg;
+    -fx-background-radius: 12px;
+    -fx-border-color: black;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1.5px;
+    -fx-padding: 20px;
+}
+
+.player-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.decision-label {
+    -fx-font-size: 13px;
+    -fx-font-style: italic;
+}
+
+.total-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.player-card .label {
     -fx-font-size: 14px;
 }

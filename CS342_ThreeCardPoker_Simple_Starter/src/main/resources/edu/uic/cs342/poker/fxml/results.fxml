@@ -12,61 +12,84 @@
       fx:controller="edu.uic.cs342.poker.controller.ResultsController"
       stylesheets="@../css/results.css">
 
-    <VBox minWidth="380.0" minHeight="380.0">
+    <VBox minWidth="650.0" minHeight="600.0">
         <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
-        <VBox spacing="15" alignment="CENTER" prefHeight="380.0" prefWidth="380.0" minWidth="380.0" minHeight="380.0">
+        <VBox spacing="20" alignment="CENTER" prefHeight="550.0" prefWidth="600.0" minWidth="600.0" minHeight="550.0">
             <HBox spacing="7" alignment="CENTER">
                 <Label fx:id="playerLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-                <Label text="Wins" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label fx:id = "winner" text="Wins" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
             </HBox>
-            <Label text="How they won" alignment="CENTER"/>
+            <Label fx:id="winnerHow" text="How they won" alignment="CENTER"/>
 
             <HBox alignment="CENTER">
-                <VBox spacing="10" style="-fx-background-color: -box-bg; ">
-                    <Label text="Player 1" style="-fx-font-weight: bold;"/>
-                    <Label fx:id="decisionLabel1"/>
-                    <HBox>
+                <!-- Player 1 -->
+                <VBox spacing="15"
+                      alignment="CENTER"
+                      prefWidth="250"
+                      minHeight="240"
+                      styleClass="player-card">
+
+                    <Label text="Player 1" styleClass="player-title"/>
+                    <Label fx:id="decisionLabel1" styleClass="decision-label"/>
+
+                    <HBox spacing="10" alignment="CENTER">
                         <Label text="Ante:"/>
                         <Label fx:id="anteLabel1"/>
                     </HBox>
-                    <HBox>
+
+                    <HBox spacing="10" alignment="CENTER">
                         <Label text="Play:"/>
                         <Label fx:id="playLabel1"/>
                     </HBox>
-                    <HBox>
+
+                    <HBox spacing="10" alignment="CENTER">
                         <Label text="Pair Plus:"/>
                         <Label fx:id="ppLabel1"/>
                     </HBox>
 
-                    <HBox spacing="7" alignment="CENTER">
-                        <Label text="Total:"/>
-                        <Label fx:id="totalLabel1"/>
+                    <Separator/>
+
+                    <HBox spacing="10" alignment="CENTER">
+                        <Label text="Total:" styleClass="total-label"/>
+                        <Label fx:id="totalLabel1" styleClass="total-label"/>
                     </HBox>
 
-
                 </VBox>
-                <VBox spacing="10" style="-fx-background-color: -box-bg;">
-                    <Label text="Player 2" style="-fx-font-weight: bold;"/>
-                    <Label fx:id="decisionLabel2"/>
-                    <HBox>
+
+                <!-- Player 2 -->
+                <VBox spacing="15"
+                      alignment="CENTER"
+                      prefWidth="250"
+                      minHeight="240"
+                      styleClass="player-card">
+
+                    <Label text="Player 2" styleClass="player-title"/>
+                    <Label fx:id="decisionLabel2" styleClass="decision-label"/>
+
+                    <HBox spacing="10" alignment="CENTER">
                         <Label text="Ante:"/>
                         <Label fx:id="anteLabel2"/>
                     </HBox>
-                    <HBox>
+
+                    <HBox spacing="10" alignment="CENTER">
                         <Label text="Play:"/>
                         <Label fx:id="playLabel2"/>
                     </HBox>
-                    <HBox>
+
+                    <HBox spacing="10" alignment="CENTER">
                         <Label text="Pair Plus:"/>
                         <Label fx:id="ppLabel2"/>
                     </HBox>
 
-                    <HBox alignment="CENTER" spacing="7">
-                        <Label text="Total:"/>
-                        <Label fx:id="totalLabel2"/>
+                    <Separator/>
+
+                    <HBox spacing="10" alignment="CENTER">
+                        <Label text="Total:" styleClass="total-label"/>
+                        <Label fx:id="totalLabel2" styleClass="total-label"/>
                     </HBox>
 
                 </VBox>
+
             </HBox>
 
             <HBox alignment="CENTER" spacing="5">

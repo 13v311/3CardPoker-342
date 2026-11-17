@@ -16,6 +16,7 @@ public class Player {
     private boolean folded;
     private boolean played;
     private boolean decided;
+    private int didWin;
 
     public Player(int amount){
         this.amount = amount;
@@ -28,6 +29,8 @@ public class Player {
 
     public void setAnte(int num){this.ante = num;}
     public void setPlayWager(int num){this.playWager = num;}
+    public void setPairPlusWager(int num){ pairPlusWager = num;}
+    public void setDidWin(int num){ didWin = num; }
 
     public int getAmount(){ return amount; }
     public int getAnte(){ return ante;}
@@ -38,6 +41,7 @@ public class Player {
     public boolean getFolded(){ return folded;}
     public boolean getPlayed(){ return played; }
     public List<Card> getHand(){ return hand;}
+    public int getDidWin(){return didWin;}
 
     //add card function
     public void addCard(Card card){
@@ -72,6 +76,7 @@ public class Player {
     public void plays(){
         played = true;
         decided = true;
+        playWager = ante;
     }
 
     public void clearHand(){
