@@ -4,10 +4,13 @@ import edu.uic.cs342.poker.GameLogic.Dealer;
 import edu.uic.cs342.poker.GameLogic.Player;
 import edu.uic.cs342.poker.GameLogic.ThreeCardLogic;
 import edu.uic.cs342.poker.SceneSwitcher;
+import edu.uic.cs342.poker.Service.DefaultGameRules;
+import edu.uic.cs342.poker.Service.GameRules;
 import edu.uic.cs342.poker.Service.GameService;
 import edu.uic.cs342.poker.ThemeManager;
 import edu.uic.cs342.poker.cards.Card;
 import edu.uic.cs342.poker.cards.Deck;
+import edu.uic.cs342.poker.cards.Rank;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
@@ -138,7 +141,8 @@ public class GameController {
         player2 = new Player(100);
         deck = new Deck();
         dealer = new Dealer(deck);
-        gameService = new GameService(player1, player2, dealer);
+        GameRules rules = new DefaultGameRules();
+        gameService = new GameService(player1, player2, dealer, rules);
 
 
 
@@ -464,7 +468,15 @@ public class GameController {
                 case KING -> rank = "king";
             }
 
-            String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
+            String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/"
+                    + rank + "_of_" + suitName;
+
+            if (dealerHand.get(i).rank() == Rank.JACK ||
+                    dealerHand.get(i).rank() == Rank.QUEEN ||
+                    dealerHand.get(i).rank() == Rank.KING) {
+                filename += "2";
+            }
+            filename += ".png";
 
             sequence.getChildren().add(fadeSwapImage(dealerCards[i], filename));
         }
@@ -503,7 +515,16 @@ public class GameController {
                     case KING -> rank = "king";
                 }
 
-                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
+                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/"
+                        + rank + "_of_" + suitName;
+
+                if (p1Hand.get(i).rank() == Rank.JACK ||
+                        p1Hand.get(i).rank() == Rank.QUEEN ||
+                        p1Hand.get(i).rank() == Rank.KING) {
+                    filename += "2";
+                }
+                filename += ".png";
+
                 sequence.getChildren().add(fadeSwapImage(p1Cards[i], filename));
 
 
@@ -533,7 +554,16 @@ public class GameController {
                     case KING -> rank = "king";
                 }
 
-                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/" + rank + "_of_" + suitName + ".png";
+                String filename = "/edu/uic/cs342/poker/images/PNG-cards-1.3/"
+                        + rank + "_of_" + suitName;
+
+                if (p2Hand.get(i).rank() == Rank.JACK ||
+                        p2Hand.get(i).rank() == Rank.QUEEN ||
+                        p2Hand.get(i).rank() == Rank.KING) {
+                    filename += "2";
+                }
+                filename += ".png";
+
                 sequence.getChildren().add(fadeSwapImage(p2Cards[i], filename));
             }
             sequence.play();

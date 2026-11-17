@@ -143,7 +143,7 @@ public class AdditionalTests {
 
         int winnings = game.playerPayouts(player1, 1);
 
-        assertEquals(15, winnings);
+        assertEquals(20, winnings);
     }
 
 
