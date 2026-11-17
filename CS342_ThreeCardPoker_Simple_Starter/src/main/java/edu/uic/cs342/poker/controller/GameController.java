@@ -479,7 +479,7 @@ public class GameController {
 
         transition.setByX(1.5);
         transition.setByY(1.5);
-        transition.setCycleCount(2);
+        transition.setCycleCount(4);
         transition.setAutoReverse(true);
 
         transition.play();
